@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract BankingSmartContract {
-    address public owner;
+    address public immutable owner;
     mapping(address => uint) public balances;
     mapping(address => uint) public feeCharged;
     mapping(address => uint) public lastTransactionTime;
@@ -36,7 +36,7 @@ contract BankingSmartContract {
         lastTransactionTime[msg.sender] = block.timestamp;
 
         
-        (bool success, ) = msg.sender.call{value: amount}("");
+        (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Failed to send funds");
     }
 
